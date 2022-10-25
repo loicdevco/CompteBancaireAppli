@@ -1,5 +1,8 @@
 package gestionCompteBancaireFenetre;
 
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
@@ -16,7 +19,6 @@ import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 
 import GestionCompteBancaireMethode.CompteMet;
-import GestionCompteBancaireMethode.LigneComptableMet;
 
 public class creationCompte extends JFrame {
 
@@ -44,8 +46,8 @@ public class creationCompte extends JFrame {
 		topPanelCreate.setOpaque(true);
 		topPanelCreate.setBackground(Color.white);
 		compteCreate = new JLabel("Comptes");
-		topPanelCreate.setBorder(
-				BorderFactory.createTitledBorder("Compte N°: " + GestionComptableMenu.getNumeroCompte().getText()));
+		topPanelCreate
+				.setBorder(BorderFactory.createTitledBorder("Compte N°: " + GestionComptableMenu.getNumeroCompteInt()));
 
 		// creation des boutons radio
 		btnChoixCompte = new ButtonGroup();
@@ -76,7 +78,7 @@ public class creationCompte extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				if (creationCompte.getSolde().getText() != null) {
 					CompteMet compte = new CompteMet();
-					compte.CreerCompte(GestionComptableMenu.getNumeroCompte().getText());
+					compte.CreerCompte(GestionComptableMenu.getNumeroCompteInt());
 					if (creationCompte.C.isSelected() == true) {
 						compte.setTypeCompte('C');
 					} else if (creationCompte.J.isSelected() == true) {
@@ -85,18 +87,36 @@ public class creationCompte extends JFrame {
 						compte.setTypeCompte('E');
 					}
 					compte.setSolde(creationCompte.getSoldeInt());
-					test.list.add(compte);
-					System.out.println(test.list);
+					String query1 = "UPDATE compte SET Type='" + compte.getTypeCompte() + "' , Solde="
+							+ compte.getSolde() + "WHERE NumeroCompte =" + compte.getNumeroCompteInt() + ";";
 
-					LigneComptableMet ouvertureComptable = new LigneComptableMet();
-					ouvertureComptable.CreerLigneComptable("Ouverture de compte", "Virement",
-							creationCompte.getSoldeInt());
-					test.list.get(consultationCompte.index).getListcomptable().add(ouvertureComptable);
+					try {
+						PreparedStatement prepare = test.conn.prepareStatement(query1);
+						prepare.execute();
+					} catch (SQLException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
 
-					consultationCompte consultation = new consultationCompte();
-					consultation.consultation();
+					String query2 = "INSERT INTO listecomptable(ID_listeComptable, listingtransaction, motif, NumeroCompte, valeur) VALUES (0,'Depot','Ouverture de compte',(SELECT NumeroCompte FROM compte WHERE NumeroCompte ="
+							+ compte.getNumeroCompteInt() + ") , " + compte.getSolde() + ");";
+					try {
+						PreparedStatement prepare2 = test.conn.prepareStatement(query2);
+						prepare2.execute();
+					} catch (SQLException e2) {
+						// TODO Auto-generated catch block
+						e2.printStackTrace();
+					}
 
-					container.dispose();
+//					LigneComptableMet ouvertureComptable = new LigneComptableMet();
+//					ouvertureComptable.CreerLigneComptable("Ouverture de compte", "Depot",
+//							creationCompte.getSoldeInt());
+//					test.list.get(consultationCompte.index).getListcomptable().add(ouvertureComptable);
+//
+//					consultationCompte consultation = new consultationCompte();
+//					consultation.consultation();
+//
+//					container.dispose();
 				}
 			}
 		});

@@ -1,5 +1,7 @@
 package gestionCompteBancaireFenetre;
 
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.text.ParseException;
 
 import java.awt.BorderLayout;
@@ -30,6 +32,7 @@ public class GestionComptableMenu extends JFrame {
 	private static JRadioButton consulter;
 	protected static JFormattedTextField numeroCompte;
 	private JButton choixMenu;
+	static int numeroCompteInt;
 
 	public void menu() {
 
@@ -71,9 +74,12 @@ public class GestionComptableMenu extends JFrame {
 
 		MaskFormatter numeroCompteFormat;
 		try {
-			numeroCompteFormat = new MaskFormatter("###-###-##");
+			numeroCompteFormat = new MaskFormatter("########");
 			numeroCompte = new JFormattedTextField(numeroCompteFormat);
 			numeroCompte.setPreferredSize(new Dimension(150, 25));
+
+			// numeroCompteInt = Integer.parseInt(numeroCompte.getText().toString());
+
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -116,24 +122,37 @@ public class GestionComptableMenu extends JFrame {
 		this.create = create;
 	}
 
-	public static JFormattedTextField getNumeroCompte() {
-		return numeroCompte;
+	public static int getNumeroCompteInt() {
+		return numeroCompteInt;
 	}
 
-	public void setNumeroCompte(JFormattedTextField numeroCompte) {
-		this.numeroCompte = numeroCompte;
+	public static void setNumeroCompteInt(int numeroCompteInt) {
+		GestionComptableMenu.numeroCompteInt = numeroCompteInt;
 	}
+
 }
 
 class choixMenuListener implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if (GestionComptableMenu.getNumeroCompte() != null && GestionComptableMenu.getCreate().isSelected() == true) {
+		if (GestionComptableMenu.getCreate().isSelected() == true) {
+			String numeroCompteStr = GestionComptableMenu.numeroCompte.getText();
+			GestionComptableMenu.setNumeroCompteInt(Integer.parseInt(numeroCompteStr));
+			System.out.println(GestionComptableMenu.numeroCompteInt);
+			String query = "INSERT INTO compte(NumeroCompte, type, Solde) VALUES ("
+					+ GestionComptableMenu.numeroCompteInt + " , null, null);";
+			try {
+				PreparedStatement prepare = test.conn.prepareStatement(query);
+				prepare.execute();
+			} catch (SQLException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 			creationCompte createAccount = new creationCompte();
 			createAccount.create();
-		} else if (GestionComptableMenu.getNumeroCompte() != null
-				&& GestionComptableMenu.getAjoutLigneComptable().isSelected() == true) {
+
+		} else if (GestionComptableMenu.getAjoutLigneComptable().isSelected() == true) {
 			LigneComptable bilan = new LigneComptable();
 			bilan.ligneComptable();
 

@@ -4,15 +4,15 @@ import java.util.ArrayList;
 
 public class CompteMet {
 
-	protected static String numeroCompte;
+	protected int numeroCompteInt;
 	protected static char typeCompte;
 	protected String tableauOperation[];
 	protected double solde;
 
 	public static ArrayList<LigneComptableMet> listcomptable;
 
-	public void CreerCompte(String numeroCompte) {
-		this.numeroCompte = numeroCompte;
+	public void CreerCompte(int numeroCompteInt) {
+		this.numeroCompteInt = numeroCompteInt;
 		this.listcomptable = new ArrayList<LigneComptableMet>();
 	}
 
@@ -49,12 +49,12 @@ public class CompteMet {
 		this.solde = soldeUpdate;
 	}
 
-	public static String getNumeroCompte() {
-		return numeroCompte;
+	public int getNumeroCompteInt() {
+		return numeroCompteInt;
 	}
 
-	public void setNumeroCompte(String numeroCompte) {
-		this.numeroCompte = numeroCompte;
+	public void setNumeroCompteInt(int numeroCompteInt) {
+		this.numeroCompteInt = numeroCompteInt;
 	}
 
 	public char getTypeCompte() {

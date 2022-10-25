@@ -39,9 +39,9 @@ public class consultationCompte extends JFrame {
 		compteConsultation = new JLabel("Bilan Comptable");
 
 		for (int i = 0; i < test.list.size(); i++) {
-			if (test.list.get(i).getNumeroCompte().equals(GestionComptableMenu.numeroCompte.getText())) {
+			if (test.list.get(i).getNumeroCompteInt() == GestionComptableMenu.numeroCompteInt) {
 				topPanelConsultation.setBorder(BorderFactory.createTitledBorder(
-						"Compte " + test.list.get(i).GetLibelleType() + " N°: " + test.list.get(i).getNumeroCompte()
+						"Compte " + test.list.get(i).GetLibelleType() + " N°: " + test.list.get(i).getNumeroCompteInt()
 								+ " : " + test.list.get(i).getSolde() + " Euros "));
 				soldeOp = test.list.get(i).getSolde();
 				index = i;

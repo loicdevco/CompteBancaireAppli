@@ -1,11 +1,8 @@
 package GestionCompteBancaireMethode;
 
-import java.util.Date;
-
 public class LigneComptableMet {
 
-	private String numeroCompte;
-	private Date dateOuverture;
+	private int numeroCompteInt;
 	private String transaction;
 	private String Motif;
 	private double valeur;

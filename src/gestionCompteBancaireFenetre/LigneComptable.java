@@ -52,9 +52,9 @@ public class LigneComptable extends JFrame {
 		compteLigneComptable = new JLabel("Ajout d'une ligne comptable");
 
 		for (int i = 0; i < test.list.size(); i++) {
-			if (test.list.get(i).getNumeroCompte().equals(GestionComptableMenu.numeroCompte.getText())) {
+			if (test.list.get(i).getNumeroCompteInt() == GestionComptableMenu.getNumeroCompteInt()) {
 				topPanelLigneComptable.setBorder(BorderFactory.createTitledBorder(
-						"Compte " + test.list.get(i).GetLibelleType() + " N°: " + test.list.get(i).getNumeroCompte()
+						"Compte " + test.list.get(i).GetLibelleType() + " N°: " + test.list.get(i).getNumeroCompteInt()
 								+ " : " + test.list.get(i).getSolde() + " Euros "));
 				soldeOp = test.list.get(i).getSolde();
 				index = i;
@@ -75,10 +75,10 @@ public class LigneComptable extends JFrame {
 			}
 		});
 
-		String[] motifs = { "salaire", "Loyer", "Alimentation", "Energie", "Taxes", "Divers" };
+		String[] motifs = { "Salaire", "Loyer", "Alimentation", "Energie", "Taxes", "Divers" };
 		motifList = new JComboBox(motifs);
 
-		String[] transactions = { "Carte Bancaire", "Cheque", "Espece" };
+		String[] transactions = { "Carte Bancaire", "Cheque", "Espece", "Virement" };
 		transactionList = new JComboBox(transactions);
 
 		btnDebit = new JButton("DEBIT");
